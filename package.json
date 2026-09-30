@@ -1,8 +1,15 @@
 {
   "name": "modale-passy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Composant React de fenêtre modale accessible, basé sur l'élément natif <dialog>.",
-  "keywords": ["react", "modal", "modale", "dialog", "accessible", "component"],
+  "keywords": [
+    "react",
+    "modal",
+    "modale",
+    "dialog",
+    "accessible",
+    "component"
+  ],
   "author": "Jody Gs",
   "license": "MIT",
   "repository": {
@@ -25,8 +32,13 @@
     },
     "./style.css": "./dist/style.css"
   },
-  "files": ["dist", "types"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist",
+    "types"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",

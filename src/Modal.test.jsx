@@ -5,6 +5,13 @@ import { Modal } from './index.js'
 
 afterEach(cleanup)
 
+/** Simule un clic complet (appui, relâchement, clic) sur un élément. */
+function press(element) {
+  fireEvent.mouseDown(element)
+  fireEvent.mouseUp(element)
+  fireEvent.click(element)
+}
+
 describe('Modal', () => {
   it("n'affiche pas son contenu quand elle est fermée", () => {
     render(
@@ -71,18 +78,49 @@ describe('Modal', () => {
       </Modal>,
     )
 
-    fireEvent.click(screen.getByText('Contenu'))
+    press(screen.getByText('Contenu'))
     expect(onClose).not.toHaveBeenCalled()
 
-    fireEvent.click(document.querySelector('dialog'))
+    press(document.querySelector('dialog'))
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('reste ouverte quand un appui commencé dans le contenu est relâché sur l’overlay', () => {
+    const onClose = vi.fn()
+    render(
+      <Modal isOpen onClose={onClose}>
+        Contenu
+      </Modal>,
+    )
+
+    // Cas d'une sélection de texte qui déborde : le navigateur envoie alors le clic au <dialog>.
+    const dialog = document.querySelector('dialog')
+    fireEvent.mouseDown(screen.getByText('Contenu'))
+    fireEvent.mouseUp(dialog)
+    fireEvent.click(dialog)
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('reste ouverte quand un appui commencé sur l’overlay est relâché dans le contenu', () => {
+    const onClose = vi.fn()
+    render(
+      <Modal isOpen onClose={onClose}>
+        Contenu
+      </Modal>,
+    )
+
+    const dialog = document.querySelector('dialog')
+    fireEvent.mouseDown(dialog)
+    fireEvent.mouseUp(screen.getByText('Contenu'))
+    fireEvent.click(dialog)
+    expect(onClose).not.toHaveBeenCalled()
   })
 
   it('ignore le clic sur l’overlay avec closeOnOverlayClick={false}', () => {
     const onClose = vi.fn()
     render(<Modal isOpen onClose={onClose} closeOnOverlayClick={false} />)
 
-    fireEvent.click(document.querySelector('dialog'))
+    press(document.querySelector('dialog'))
     expect(onClose).not.toHaveBeenCalled()
   })
 

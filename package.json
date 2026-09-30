@@ -1,0 +1,54 @@
+{
+  "name": "modale-passy",
+  "version": "1.0.0",
+  "description": "Composant React de fenêtre modale accessible, basé sur l'élément natif <dialog>.",
+  "keywords": ["react", "modal", "modale", "dialog", "accessible", "component"],
+  "author": "Jody Gs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JodyGs/modale-passy.git"
+  },
+  "homepage": "https://github.com/JodyGs/modale-passy#readme",
+  "bugs": {
+    "url": "https://github.com/JodyGs/modale-passy/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": ["dist", "types"],
+  "sideEffects": ["**/*.css"],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "happy-dom": "^20.14.5",
+    "oxlint": "^1.81.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.2"
+  }
+}

@@ -1,0 +1,93 @@
+/* Personnalisation : surcharger ces variables sur `.modale-passy` ou sur un parent. */
+.modale-passy {
+  --modale-passy-width: 500px;
+  --modale-passy-padding: 15px 30px;
+  --modale-passy-radius: 8px;
+  --modale-passy-background: #fff;
+  --modale-passy-color: #1f2937;
+  --modale-passy-overlay: rgba(0, 0, 0, 0.75);
+  --modale-passy-shadow: 0 0 10px #000;
+  --modale-passy-duration: 200ms;
+
+  box-sizing: border-box;
+  width: 90%;
+  max-width: var(--modale-passy-width);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  border: none;
+  border-radius: var(--modale-passy-radius);
+  background: var(--modale-passy-background);
+  color: var(--modale-passy-color);
+  box-shadow: var(--modale-passy-shadow);
+  overflow: auto;
+}
+
+.modale-passy[open] {
+  animation: modale-passy-fade-in var(--modale-passy-duration) ease-out;
+}
+
+.modale-passy::backdrop {
+  background: var(--modale-passy-overlay);
+}
+
+.modale-passy[open]::backdrop {
+  animation: modale-passy-fade-in var(--modale-passy-duration) ease-out;
+}
+
+.modale-passy__content {
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--modale-passy-padding);
+}
+
+.modale-passy__title {
+  margin: 0 0 0.5em;
+  padding-right: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.modale-passy__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modale-passy__close:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.modale-passy__close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Bloque le défilement de la page tant qu'une modale est ouverte. */
+html:has(.modale-passy[open]) {
+  overflow: hidden;
+}
+
+@keyframes modale-passy-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modale-passy[open],
+  .modale-passy[open]::backdrop {
+    animation: none;
+  }
+}

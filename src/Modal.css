@@ -62,6 +62,16 @@
   cursor: pointer;
 }
 
+.modale-passy--close-left .modale-passy__title {
+  padding-right: 0;
+  padding-left: 1.5rem;
+}
+
+.modale-passy--close-left .modale-passy__close {
+  right: auto;
+  left: 6px;
+}
+
 .modale-passy__close:hover {
   background: rgba(0, 0, 0, 0.08);
 }

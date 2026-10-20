@@ -57,6 +57,7 @@ Le composant est contrôlé : c'est le parent qui décide de l'ouverture avec `i
 | `closeOnEscape`       | `boolean`    | `true`    | Ferme la modale avec la touche Échap.                                       |
 | `closeOnOverlayClick` | `boolean`    | `true`    | Ferme la modale au clic sur l'overlay.                                      |
 | `showCloseButton`     | `boolean`    | `true`    | Affiche le bouton de fermeture (croix).                                     |
+| `closeButtonPosition` | `"right"` \| `"left"` | `"right"` | Côté où placer la croix de fermeture (en haut à droite ou à gauche). |
 | `closeLabel`          | `string`     | `"Close"` | Libellé accessible du bouton de fermeture.                                  |
 | `className`           | `string`     | `""`      | Classe CSS supplémentaire appliquée au `<dialog>`.                          |
 | `ariaLabel`           | `string`     | aucun     | Nom accessible de la modale quand aucun `title` n'est fourni.               |

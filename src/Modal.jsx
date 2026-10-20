@@ -21,6 +21,8 @@ import './Modal.css'
  * @param {boolean} [props.closeOnOverlayClick=true] Autorise la fermeture au clic sur le fond assombri
  *   (équivalent de `clickClose`).
  * @param {boolean} [props.showCloseButton=true] Affiche le bouton de fermeture en croix (équivalent de `showClose`).
+ * @param {'right' | 'left'} [props.closeButtonPosition='right'] Côté où placer la croix de fermeture, en haut
+ *   à droite ou en haut à gauche de la modale.
  * @param {string} [props.closeLabel='Close'] Libellé du bouton de fermeture lu par les lecteurs d'écran
  *   (équivalent de `closeText`).
  * @param {string} [props.className=''] Classe CSS ajoutée au `<dialog>`, pour personnaliser le style
@@ -43,6 +45,7 @@ export function Modal({
   closeOnEscape = true,
   closeOnOverlayClick = true,
   showCloseButton = true,
+  closeButtonPosition = 'right',
   closeLabel = 'Close',
   className = '',
   ariaLabel,
@@ -107,7 +110,9 @@ export function Modal({
     if (closeOnOverlayClick && clickedOverlay) onClose?.()
   }
 
-  const classNames = ['modale-passy', className].filter(Boolean).join(' ')
+  const classNames = ['modale-passy', closeButtonPosition === 'left' && 'modale-passy--close-left', className]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <dialog

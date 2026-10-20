@@ -19,6 +19,9 @@ export function App() {
         </button>{' '}
         <button type="button" onClick={() => setOpenModal('strict')}>
           Fermeture par le bouton uniquement
+        </button>{' '}
+        <button type="button" onClick={() => setOpenModal('left')}>
+          Croix à gauche
         </button>
       </p>
 
@@ -31,6 +34,10 @@ export function App() {
         <button type="button" onClick={close}>
           OK
         </button>
+      </Modal>
+
+      <Modal isOpen={openModal === 'left'} onClose={close} title="Croix à gauche" closeButtonPosition="left">
+        <p>La croix de fermeture est placée en haut à gauche.</p>
       </Modal>
 
       <Modal

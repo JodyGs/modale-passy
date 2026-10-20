@@ -15,6 +15,8 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean
   /** Affiche le bouton de fermeture (croix). Par défaut : `true`. */
   showCloseButton?: boolean
+  /** Côté où placer la croix de fermeture. Par défaut : `"right"`. */
+  closeButtonPosition?: 'right' | 'left'
   /** Libellé accessible du bouton de fermeture. Par défaut : `"Close"`. */
   closeLabel?: string
   /** Classe CSS supplémentaire appliquée au `<dialog>`. */

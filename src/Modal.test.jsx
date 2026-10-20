@@ -88,6 +88,15 @@ describe('Modal', () => {
     expect(screen.queryByLabelText('Close')).toBeNull()
   })
 
+  it('place la croix à droite par défaut et à gauche avec closeButtonPosition="left"', () => {
+    const { rerender } = render(<Modal isOpen onClose={() => {}} />)
+    const dialog = document.querySelector('dialog')
+    expect(dialog.classList.contains('modale-passy--close-left')).toBe(false)
+
+    rerender(<Modal isOpen onClose={() => {}} closeButtonPosition="left" />)
+    expect(dialog.classList.contains('modale-passy--close-left')).toBe(true)
+  })
+
   it('appelle onClose au clic sur l’overlay, mais pas au clic dans le contenu', () => {
     const onClose = vi.fn()
     render(

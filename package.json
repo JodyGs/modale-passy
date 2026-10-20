@@ -1,6 +1,6 @@
 {
   "name": "modale-passy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Composant React de fenêtre modale accessible, basé sur l'élément natif <dialog>.",
   "keywords": [
     "react",

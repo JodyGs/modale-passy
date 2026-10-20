@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react'
+import { useCallback, useId, useRef, useState } from 'react'
 import './Modal.css'
 
 /**
@@ -47,22 +47,26 @@ export function Modal({
   className = '',
   ariaLabel,
 }) {
-  const dialogRef = useRef(null)
+  // Le nœud <dialog> est conservé dans un état : `setDialog` sert de ref callback.
+  const [dialog, setDialog] = useState(null)
   const pressStartedOnOverlay = useRef(false)
   const pressEndedOnOverlay = useRef(false)
   const titleId = useId()
 
-  // Synchronise l'état natif du <dialog> avec la prop `isOpen`.
-  useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
+  // Le contenu n'est rendu que si `isOpen` vaut true : React appelle ce ref callback avec le contenu
+  // à son montage (on ouvre le <dialog>) et avec `null` à son démontage (on le ferme).
+  const syncDialog = useCallback(
+    (content) => {
+      if (!dialog) return
 
-    if (isOpen && !dialog.open) {
-      dialog.showModal()
-    } else if (!isOpen && dialog.open) {
-      dialog.close()
-    }
-  }, [isOpen])
+      if (content && !dialog.open) {
+        dialog.showModal()
+      } else if (!content && dialog.open) {
+        dialog.close()
+      }
+    },
+    [dialog],
+  )
 
   // Touche Échap : gérée ici plutôt que par le navigateur, qui force la fermeture
   // au deuxième appui même si l'événement `cancel` est annulé.
@@ -84,7 +88,7 @@ export function Modal({
   }
 
   // Le contenu remplit tout le <dialog> : un événement dont la cible est le <dialog> lui-même vise l'overlay.
-  const isOverlay = (target) => target === dialogRef.current
+  const isOverlay = (target) => target === dialog
 
   const handleMouseDown = (event) => {
     pressStartedOnOverlay.current = isOverlay(event.target)
@@ -107,7 +111,7 @@ export function Modal({
 
   return (
     <dialog
-      ref={dialogRef}
+      ref={setDialog}
       className={classNames}
       aria-labelledby={title ? titleId : undefined}
       aria-label={title ? undefined : ariaLabel}
@@ -119,7 +123,7 @@ export function Modal({
       onClick={handleClick}
     >
       {isOpen && (
-        <div className="modale-passy__content">
+        <div ref={syncDialog} className="modale-passy__content">
           {title && (
             <h2 id={titleId} className="modale-passy__title">
               {title}

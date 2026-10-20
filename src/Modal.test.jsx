@@ -42,6 +42,24 @@ describe('Modal', () => {
     expect(document.querySelector('dialog').open).toBe(false)
   })
 
+  it('se rouvre après avoir été fermée', () => {
+    const { rerender } = render(<Modal isOpen onClose={() => {}} />)
+    rerender(<Modal isOpen={false} onClose={() => {}} />)
+    rerender(<Modal isOpen onClose={() => {}} />)
+
+    expect(document.querySelector('dialog').open).toBe(true)
+  })
+
+  it('reste ouverte quand le parent se re-rend', () => {
+    const { rerender } = render(<Modal isOpen onClose={() => {}} title="A" />)
+    const dialog = document.querySelector('dialog')
+    const close = vi.spyOn(dialog, 'close')
+    rerender(<Modal isOpen onClose={() => {}} title="B" />)
+
+    expect(close).not.toHaveBeenCalled()
+    expect(dialog.open).toBe(true)
+  })
+
   it('relie le titre à la modale pour les lecteurs d’écran', () => {
     render(<Modal isOpen onClose={() => {}} title="Confirmation" />)
 

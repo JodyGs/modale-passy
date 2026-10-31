@@ -86,8 +86,10 @@ export function Modal({
   }
 
   // Fermeture déclenchée par le navigateur (ex. <form method="dialog">) : on prévient le parent.
+  // L'événement `close` est asynchrone : on l'ignore si le <dialog> a été rouvert entre-temps,
+  // comme sous StrictMode, qui ferme puis rouvre le <dialog> au montage du contenu.
   const handleNativeClose = () => {
-    if (isOpen) onClose?.()
+    if (isOpen && !dialog.open) onClose?.()
   }
 
   // Le contenu remplit tout le <dialog> : un événement dont la cible est le <dialog> lui-même vise l'overlay.

@@ -1,3 +1,4 @@
+import { StrictMode } from 'react'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -58,6 +59,44 @@ describe('Modal', () => {
 
     expect(close).not.toHaveBeenCalled()
     expect(dialog.open).toBe(true)
+  })
+
+  it('reste ouverte sous StrictMode, qui ferme puis rouvre le <dialog> au montage du contenu', () => {
+    // happy-dom envoie `close` tout de suite, alors que les navigateurs le mettent en file d'attente.
+    const close = vi.spyOn(HTMLDialogElement.prototype, 'close').mockImplementation(function () {
+      this.removeAttribute('open')
+    })
+    const onClose = vi.fn()
+    const { rerender } = render(
+      <StrictMode>
+        <Modal isOpen={false} onClose={onClose} />
+      </StrictMode>,
+    )
+    rerender(
+      <StrictMode>
+        <Modal isOpen onClose={onClose} />
+      </StrictMode>,
+    )
+
+    // L'événement `close` de la fermeture simulée n'arrive qu'après la réouverture.
+    const dialog = document.querySelector('dialog')
+    expect(dialog.open).toBe(true)
+    fireEvent(dialog, new Event('close'))
+
+    expect(close).toHaveBeenCalled()
+    expect(onClose).not.toHaveBeenCalled()
+    close.mockRestore()
+  })
+
+  it('appelle onClose quand le navigateur ferme le <dialog>', () => {
+    const onClose = vi.fn()
+    render(<Modal isOpen onClose={onClose} />)
+
+    const dialog = document.querySelector('dialog')
+    dialog.close()
+    fireEvent(dialog, new Event('close'))
+
+    expect(onClose).toHaveBeenCalled()
   })
 
   it('relie le titre à la modale pour les lecteurs d’écran', () => {
